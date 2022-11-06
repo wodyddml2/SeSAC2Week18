@@ -23,6 +23,25 @@ struct User: Codable {
     let username: String
 }
 
+enum SeSACError: Int, Error {
+    case invalidAuthorization = 401
+    case takeEmail = 406
+    case emptyParameters = 501
+}
+
+extension SeSACError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .invalidAuthorization:
+            return "토큰이 만료되었습니다. 다시 로그인 해주세요"
+        case .takeEmail:
+            return "이미 가입된 회원입니다. 로그인 해주세요"
+        case .emptyParameters:
+            return "없다."
+        }
+    }
+}
+
 class APIService {
     func signup() {
         let api = SeSACAPI.signup(userName: "JY", email: "ww@naver.com", password: "12345678")
@@ -63,5 +82,8 @@ class APIService {
                 print(response.response!.statusCode)
             }
         }
+        
     }
+    
+    
 }
